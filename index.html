@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Calculator</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        #successMessage, #errorMessage {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+        }
+        #successMessage {
+            background-color: #28a745;
+        }
+        #errorMessage {
+            background-color: #dc3545;
+        }
+
+        body {
+            margin: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-3"><strong>Basic Loan Calculator</strong></h2>
+        <small id="formHelp" class="form-text text-muted">Example of the DEL Loan Management System v1</small>
+        <br>
+        <form id="loanForm">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="loanProduct">Loan Product:</label>
+                        <select class="form-control" id="loanProduct">
+                            <option>General Loan</option>
+                            <option>Student Loan</option>
+                            <option>Car Loan</option>
+                        </select>
+                        <small id="loanProductHelp" class="form-text text-muted">Choose a loan product.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="calcMethod">Calculation Method:</label>
+                        <select class="form-control" id="calcMethod" aria-describedby="calcMethodHelp">
+                            <option value="amortizing">Amortizing Loan</option>
+                            <option value="principalOnly">Only Principal Equal Payment</option>
+                            <option value="interestOnly">Interest-Only Loan</option>
+                        </select>
+                        <small id="calcMethodHelp" class="form-text text-muted">Choose between a standard amortizing loan, interest-only loan, or only principal equal payment.</small>
+                    </div>                                        
+                    <div class="form-group">
+                        <label for="amount">Loan Amount ($):</label>
+                        <input type="text" class="form-control" id="amount" placeholder="Enter amount" required aria-describedby="amountHelp">
+                        <small id="amountHelp" class="form-text text-muted">Enter the principal amount you wish to borrow.</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="interest">Monthly Interest Rate (%):</label>
+                        <input type="number" class="form-control" id="interest" placeholder="Interest Rate" min="0.01" required aria-describedby="interestRateHelp">
+                        <small id="interestRateHelp" class="form-text text-muted">Enter the monthly interest rate.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="term">Term (in months):</label>
+                        <input type="number" class="form-control" id="term" placeholder="Term in months" min="1" max="72" required aria-describedby="termHelp">
+                        <small id="termHelp" class="form-text text-muted">Duration of the loan in months.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="repaymentFrequency">Repayment Frequency:</label>
+                        <select class="form-control" id="repaymentFrequency">
+                            <option value="monthly">Monthly</option>
+                            <option value="fortnightly">Fortnightly</option>
+                            <option value="weekly">Weekly</option>
+                        </select>
+                        <small id="repaymentFrequencyHelp" class="form-text text-muted">Choose your repayment frequency.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">Start Date of Loan:</label>
+                        <input type="date" class="form-control" id="startDate" required aria-describedby="startDateHelp">
+                        <small id="startDateHelp" class="form-text text-muted">Select the start date for the loan repayments.</small>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" id="calculateButton">
+                Calculate
+                <span id="loadingSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
+            </button>
+            <button type="button" class="btn btn-success" id="resetButton">Reset</button>
+        </form>
+        <div id="successMessage" aria-live="polite">Calculation successful!</div>
+        <div id="errorMessage" aria-live="polite"></div>        
+        <h2 class="mt-4"><strong>Monthly Payments</strong></h2>
+        <div class="d-flex justify-content-end mb-2">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Action
+                </button>
+                <div class="dropdown-menu" aria-labelledby="actionDropdown">
+                    <a class="dropdown-item" id="downloadPdfButton">Download as PDF</a>
+                    <a class="dropdown-item" id="emailPdfButton">Receive via Email</a>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped" id="resultTable">
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Payment Date</th>
+                    <th>Principal Payment ($)</th>
+                    <th>Interest Payment ($)</th>
+                    <th>Balance ($)</th>
+                    <th>Total Amount to be Paid ($)</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="loan-calculator.js"></script>
+</body>
+</html>
