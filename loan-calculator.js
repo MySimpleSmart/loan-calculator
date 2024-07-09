@@ -93,7 +93,7 @@ function performCalculations() {
     }
 
     addTotalRow(totalPrincipalPayment, totalInterestPaid);
-    displaySuccessMessage("Calculation successful!");
+    displaySuccessMessage("Тооцоолол амжилттай.");
 }
 
 function addTotalRow(totalPrincipal, totalInterest) {
@@ -114,16 +114,16 @@ function validateInputs() {
     var startDate = document.getElementById("startDate").value;
 
     if (!amount || parseFloat(amount) <= 0) {
-        return { isValid: false, message: "Please enter a valid amount greater than 0." };
+        return { isValid: false, message: "Зээлийн дүнгээ оруулна уу." };
     }
     if (!interestRate || parseFloat(interestRate) <= 0) {
-        return { isValid: false, message: "Please enter a valid interest rate greater than 0." };
+        return { isValid: false, message: "Зээлийн хүү оруулна уу." };
     }
     if (!termMonths || parseInt(termMonths) <= 0 || parseInt(termMonths) > 72) {
-        return { isValid: false, message: "Please enter a term from 1 to 72 months." };
+        return { isValid: false, message: "Зээлийн хугацааг оруулна уу." };
     }
     if (!startDate) {
-        return { isValid: false, message: "Please select a start date for the loan." };
+        return { isValid: false, message: "Зээл эхлэх огноог оруулна уу." };
     }
     return { isValid: true, message: "" };
 }
@@ -147,7 +147,7 @@ function addRow(month, paymentDate, principal, interest, balance, totalPayment) 
 function resetForm() {
     document.getElementById("loanForm").reset();
     clearResults();
-    displaySuccessMessage("Form reset successfully.");
+    displaySuccessMessage("Амжилттай шинэчлэгдлээ.");
 }
 
 function clearResults() {

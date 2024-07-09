@@ -11,7 +11,7 @@
         #successMessage, #errorMessage {
             display: none;
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
             padding: 10px;
             border-radius: 5px;
@@ -88,18 +88,18 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-primary" id="calculateButton">
+            <button type="button" class="btn btn-success" id="calculateButton">
                 Тооцоолох
                 <span id="loadingSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
             </button>
-            <button type="button" class="btn btn-success" id="resetButton">Дахин эхлэх</button>
+            <button type="button" class="btn btn-secondary" id="resetButton">Дахин эхлэх</button>
         </form>
         <div id="successMessage" aria-live="polite">Тооцоолол амжилттай!</div>
         <div id="errorMessage" aria-live="polite"></div>        
         <h2 class="mt-4"><strong>Зээлийн эргэн төлөлт</strong></h2>
         <div class="d-flex justify-content-end mb-2">
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-danger dropdown-toggle" type="button" id="actionDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Үйлдэл
                 </button>
                 <div class="dropdown-menu" aria-labelledby="actionDropdown">
