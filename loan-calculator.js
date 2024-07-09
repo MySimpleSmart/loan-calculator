@@ -48,24 +48,26 @@ function performCalculations() {
             break;
         case "fortnightly":
             daysPerPeriod = 14;
-            paymentsCount = Math.ceil((termMonths * 30) / 14);
+            paymentsCount = termMonths * 2;
             break;
         case "weekly":
             daysPerPeriod = 7;
-            paymentsCount = Math.ceil((termMonths * 30) / 7);
+            paymentsCount = termMonths * 4;
             break;
     }
 
-    // Calculate the daily interest rate
+    // Daily interest rate calculation
     var dailyInterestRate = Math.pow(1 + monthlyInterestRate, 1 / 30) - 1;
 
-    // Calculate the period interest rate
+    // Period interest rate calculation
     var periodInterestRate = Math.pow(1 + dailyInterestRate, daysPerPeriod) - 1;
+
+    // Period payment calculation
+    var periodPayment = (amount * periodInterestRate) / (1 - Math.pow(1 + periodInterestRate, -paymentsCount));
 
     var remainingBalance = amount;
     var totalInterestPaid = 0;
     var paymentDate = new Date(startDate);
-    var periodPayment = (amount * periodInterestRate) / (1 - Math.pow(1 + periodInterestRate, -paymentsCount));
     var totalPrincipalPayment = 0;
 
     // Add initial row for loan disbursement date
@@ -101,10 +103,10 @@ function addTotalRow(totalPrincipal, totalInterest) {
     var row = table.insertRow();
     row.insertCell(0).innerHTML = "Total";
     row.insertCell(1).innerHTML = "";
-    row.insertCell(2).innerHTML = `$${totalPrincipal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    row.insertCell(3).innerHTML = `$${totalInterest.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    row.insertCell(2).innerHTML = `$${totalPrincipal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    row.insertCell(3).innerHTML = `$${totalInterest.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     row.insertCell(4).innerHTML = "";
-    row.insertCell(5).innerHTML = `$${(totalPrincipal + totalInterest).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    row.insertCell(5).innerHTML = `$${(totalPrincipal + totalInterest).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 function validateInputs() {
