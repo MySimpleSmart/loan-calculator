@@ -31,92 +31,92 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h2 class="mb-3"><strong>Basic Loan Calculator</strong></h2>
+        <h2 class="mb-3"><strong>Зээлийн тооцоолол</strong></h2>
         <small id="formHelp" class="form-text text-muted">Example of the DEL Loan Management System v1</small>
         <br>
         <form id="loanForm">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="loanProduct">Зээлийн Бүтээгдэхүүн:</label>
+                        <label for="loanProduct">Зээлийн бүтээгдэхүүн:</label>
                         <select class="form-control" id="loanProduct">
-                            <option>General Loan</option>
-                            <option>Student Loan</option>
-                            <option>Car Loan</option>
+                            <option>Хэрэглээний Зээл</option>
+                            <option>Сургалтын Зээл</option>
+                            <option>Автомашины Зээл</option>
                         </select>
-                        <small id="loanProductHelp" class="form-text text-muted">Choose a loan product.</small>
+                        <small id="loanProductHelp" class="form-text text-muted">Зээлийн бүтээгдэхүүн сонгох.</small>
                     </div>
                     <div class="form-group">
-                        <label for="calcMethod">Calculation Method:</label>
+                        <label for="calcMethod">Зээл тооцоолох нөхцөл:</label>
                         <select class="form-control" id="calcMethod" aria-describedby="calcMethodHelp">
-                            <option value="amortizing">Amortizing Loan</option>
-                            <option value="principalOnly">Only Principal Equal Payment</option>
-                            <option value="interestOnly">Interest-Only Loan</option>
+                            <option value="amortizing">Нийт төлөлт тэнцүү</option>
+                            <option value="principalOnly">Үндсэн төлөлт тэнцүү</option>
+                            <option value="interestOnly">Зөвхөн хүү төлөлт</option>
                         </select>
-                        <small id="calcMethodHelp" class="form-text text-muted">Choose between a standard amortizing loan, interest-only loan, or only principal equal payment.</small>
+                        <small id="calcMethodHelp" class="form-text text-muted">Зээлийн эргэн төлөлтийн график тооцоолох нөхцөл</small>
                     </div>                                        
                     <div class="form-group">
-                        <label for="amount">Loan Amount ($):</label>
-                        <input type="text" class="form-control" id="amount" placeholder="Enter amount" required aria-describedby="amountHelp">
-                        <small id="amountHelp" class="form-text text-muted">Enter the principal amount you wish to borrow.</small>
+                        <label for="amount">Зээлийн дүн ($):</label>
+                        <input type="text" class="form-control" id="amount" placeholder="Зээлийн дүн" required aria-describedby="amountHelp">
+                        <small id="amountHelp" class="form-text text-muted">Зөвхөн тоогоор зээлийн дүн оруулах</small>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="interest">Monthly Interest Rate (%):</label>
-                        <input type="number" class="form-control" id="interest" placeholder="Interest Rate" min="0.01" required aria-describedby="interestRateHelp">
-                        <small id="interestRateHelp" class="form-text text-muted">Enter the monthly interest rate.</small>
+                        <label for="interest">Зээлийн хүү (%):</label>
+                        <input type="number" class="form-control" id="interest" placeholder="Зээлийн хүү (сараар)" min="0.01" required aria-describedby="interestRateHelp">
+                        <small id="interestRateHelp" class="form-text text-muted">Зээлийн хүүг сараар тооцоолно, зөвхөн тоогоор оруулна уу.</small>
                     </div>
                     <div class="form-group">
-                        <label for="term">Term (in months):</label>
-                        <input type="number" class="form-control" id="term" placeholder="Term in months" min="1" max="72" required aria-describedby="termHelp">
-                        <small id="termHelp" class="form-text text-muted">Duration of the loan in months.</small>
+                        <label for="term">Зээлийн хугацаа:</label>
+                        <input type="number" class="form-control" id="term" placeholder="Зээлийн хугацаа (сараар)" min="1" max="72" required aria-describedby="termHelp">
+                        <small id="termHelp" class="form-text text-muted">Хамгийн багадаа 1 сар, дээд тал нь 72 сар</small>
                     </div>
                     <div class="form-group">
-                        <label for="repaymentFrequency">Repayment Frequency:</label>
+                        <label for="repaymentFrequency">Зээл эргэн төлөх нөхцөл</label>
                         <select class="form-control" id="repaymentFrequency">
-                            <option value="monthly">Monthly</option>
-                            <option value="fortnightly">Fortnightly</option>
-                            <option value="weekly">Weekly</option>
+                            <option value="monthly">1 сард 1 удаа</option>
+                            <option value="fortnightly">14 хоногт 1 удаа</option>
+                            <option value="weekly">7 хоногт 1 удаа</option>
                         </select>
-                        <small id="repaymentFrequencyHelp" class="form-text text-muted">Choose your repayment frequency.</small>
+                        <small id="repaymentFrequencyHelp" class="form-text text-muted">Зээл эргэн төлөх нөхцөл</small>
                     </div>
                     <div class="form-group">
-                        <label for="startDate">Start Date of Loan:</label>
+                        <label for="startDate">Зээл эхлэх огноо:</label>
                         <input type="date" class="form-control" id="startDate" required aria-describedby="startDateHelp">
-                        <small id="startDateHelp" class="form-text text-muted">Select the start date for the loan repayments.</small>
+                        <small id="startDateHelp" class="form-text text-muted">Зээл эхлэх огноог сонгох.</small>
                     </div>
                 </div>
             </div>
             <button type="button" class="btn btn-primary" id="calculateButton">
-                Calculate
+                Тооцоолох
                 <span id="loadingSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;"></span>
             </button>
-            <button type="button" class="btn btn-success" id="resetButton">Reset</button>
+            <button type="button" class="btn btn-success" id="resetButton">Дахин эхлэх</button>
         </form>
-        <div id="successMessage" aria-live="polite">Calculation successful!</div>
+        <div id="successMessage" aria-live="polite">Тооцоолол амжилттай!</div>
         <div id="errorMessage" aria-live="polite"></div>        
-        <h2 class="mt-4"><strong>Monthly Payments</strong></h2>
+        <h2 class="mt-4"><strong>Зээлийн эргэн төлөлт</strong></h2>
         <div class="d-flex justify-content-end mb-2">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="actionDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Action
+                    Үйлдэл
                 </button>
                 <div class="dropdown-menu" aria-labelledby="actionDropdown">
-                    <a class="dropdown-item" id="downloadPdfButton">Download as PDF</a>
-                    <a class="dropdown-item" id="emailPdfButton">Receive via Email</a>
+                    <a class="dropdown-item" id="downloadPdfButton">PDF татаж авах</a>
+                    <a class="dropdown-item" id="emailPdfButton">Имэйлээр авах</a>
                 </div>
             </div>
         </div>
         <table class="table table-striped" id="resultTable">
             <thead>
                 <tr>
-                    <th>Number</th>
-                    <th>Payment Date</th>
-                    <th>Principal Payment ($)</th>
-                    <th>Interest Payment ($)</th>
-                    <th>Balance ($)</th>
-                    <th>Total Amount to be Paid ($)</th>
+                    <th>Дугаар</th>
+                    <th>Төлөлт хийгдэх огноо</th>
+                    <th>Үндсэн зээл ($)</th>
+                    <th>Хүү ($)</th>
+                    <th>Үлдэгдэл ($)</th>
+                    <th>Нийт төлөх дүн ($)</th>
                 </tr>
             </thead>
             <tbody>

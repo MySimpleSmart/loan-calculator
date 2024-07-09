@@ -154,12 +154,12 @@ function clearResults() {
     var table = document.getElementById("resultTable");
     table.innerHTML = `
         <tr>
-            <th>Number</th>
-            <th>Payment Date</th>
-            <th>Principal Payment ($)</th>
-            <th>Interest Payment ($)</th>
-            <th>Balance ($)</th>
-            <th>Total Amount to be Paid ($)</th>
+            <th>Дугаар</th>
+            <th>Төлөлт хийгдэх огноо</th>
+            <th>Үндсэн зээл ($)</th>
+            <th>Хүү ($)</th>
+            <th>Үлдэгдэл ($)</th>
+            <th>Нийт төлөх дүн ($)</th>
         </tr>
     `;
 }
