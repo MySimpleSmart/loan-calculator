@@ -56,39 +56,51 @@ function performCalculations() {
             break;
     }
 
-    // Daily interest rate calculation
     var dailyInterestRate = Math.pow(1 + monthlyInterestRate, 1 / 30) - 1;
-
-    // Period interest rate calculation
     var periodInterestRate = Math.pow(1 + dailyInterestRate, daysPerPeriod) - 1;
 
-    // Period payment calculation
-    var periodPayment = (amount * periodInterestRate) / (1 - Math.pow(1 + periodInterestRate, -paymentsCount));
+    var periodPayment;
+    if (calcMethod === "amortizing") {
+        periodPayment = (amount * periodInterestRate) / (1 - Math.pow(1 + periodInterestRate, -paymentsCount));
+    } else if (calcMethod === "principalOnly") {
+        periodPayment = amount / paymentsCount;
+    } else if (calcMethod === "interestOnly") {
+        periodPayment = amount * periodInterestRate;
+    }
 
     var remainingBalance = amount;
     var totalInterestPaid = 0;
     var paymentDate = new Date(startDate);
     var totalPrincipalPayment = 0;
 
-    // Add initial row for loan disbursement date
     addRow(0, paymentDate.toLocaleDateString(), 0, 0, remainingBalance, 0);
 
     for (let payment = 1; payment <= paymentsCount; payment++) {
         var interestPayment = remainingBalance * periodInterestRate;
-        var principalPayment = periodPayment - interestPayment;
-        totalPrincipalPayment += principalPayment;
-        var totalPayment = periodPayment;
+        var principalPayment;
+        var totalPayment;
 
+        if (calcMethod === "amortizing") {
+            principalPayment = periodPayment - interestPayment;
+            totalPayment = periodPayment;
+        } else if (calcMethod === "principalOnly") {
+            principalPayment = periodPayment;
+            totalPayment = principalPayment + interestPayment;
+        } else if (calcMethod === "interestOnly") {
+            principalPayment = 0;
+            totalPayment = interestPayment;
+        }
+
+        totalPrincipalPayment += principalPayment;
         remainingBalance -= principalPayment;
         totalInterestPaid += interestPayment;
 
         addRow(payment, paymentDate.toLocaleDateString(), principalPayment, interestPayment, remainingBalance, totalPayment);
 
-        // Adjust the payment date based on the payment frequency
         if (repayment === "monthly") {
             paymentDate.setMonth(paymentDate.getMonth() + 1);
         } else if (repayment === "fortnightly") {
-            paymentDate.setDate(paymentDate.getDate() + 14); // Add 14 days for fortnightly payments
+            paymentDate.setDate(paymentDate.getDate() + 14);
         } else if (repayment === "weekly") {
             paymentDate.setDate(paymentDate.getDate() + 7);
         }
@@ -107,6 +119,17 @@ function addTotalRow(totalPrincipal, totalInterest) {
     row.insertCell(3).innerHTML = `$${totalInterest.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     row.insertCell(4).innerHTML = "";
     row.insertCell(5).innerHTML = `$${(totalPrincipal + totalInterest).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
+function addRow(month, paymentDate, principal, interest, balance, totalPayment) {
+    var table = document.getElementById("resultTable");
+    var row = table.insertRow();
+    row.insertCell(0).innerHTML = month;
+    row.insertCell(1).innerHTML = paymentDate;
+    row.insertCell(2).innerHTML = `$${principal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    row.insertCell(3).innerHTML = `$${interest.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    row.insertCell(4).innerHTML = `$${balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    row.insertCell(5).innerHTML = `$${totalPayment.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 function validateInputs() {
@@ -133,37 +156,6 @@ function validateInputs() {
 function setCalculatingState(isCalculating) {
     document.getElementById("calculateButton").disabled = isCalculating;
     document.getElementById("loadingSpinner").style.display = isCalculating ? "inline-block" : "none";
-}
-
-function addRow(month, paymentDate, principal, interest, balance, totalPayment) {
-    var table = document.getElementById("resultTable");
-    var row = table.insertRow();
-    row.insertCell(0).innerHTML = month;
-    row.insertCell(1).innerHTML = paymentDate;
-    row.insertCell(2).innerHTML = `$${principal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    row.insertCell(3).innerHTML = `$${interest.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    row.insertCell(4).innerHTML = `$${balance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    row.insertCell(5).innerHTML = `$${totalPayment.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-}
-
-function resetForm() {
-    document.getElementById("loanForm").reset();
-    clearResults();
-    displaySuccessMessage("Амжилттай шинэчлэгдлээ.");
-}
-
-function clearResults() {
-    var table = document.getElementById("resultTable");
-    table.innerHTML = `
-        <tr>
-            <th>Дугаар</th>
-            <th>Төлөлт хийгдэх огноо</th>
-            <th>Үндсэн зээл ($)</th>
-            <th>Хүү ($)</th>
-            <th>Үлдэгдэл ($)</th>
-            <th>Нийт төлөх дүн ($)</th>
-        </tr>
-    `;
 }
 
 function displayErrorMessage(message) {
@@ -203,3 +195,23 @@ document.getElementById('emailPdfButton').addEventListener('click', function() {
         console.log("Email and data sent to the server.");
     }
 });
+
+function resetForm() {
+    document.getElementById("loanForm").reset();
+    clearResults();
+    displaySuccessMessage("Амжилттай шинэчлэгдлээ.");
+}
+
+function clearResults() {
+    var table = document.getElementById("resultTable");
+    table.innerHTML = `
+        <tr>
+            <th>Дугаар</th>
+            <th>Төлөлт хийгдэх огноо</th>
+            <th>Үндсэн зээл ($)</th>
+            <th>Хүү ($)</th>
+            <th>Үлдэгдэл ($)</th>
+            <th>Нийт төлөх дүн ($)</th>
+        </tr>
+    `;
+}
